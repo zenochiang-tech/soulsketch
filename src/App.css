@@ -1,0 +1,8 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  user-select: none; /* 防止长按弹出菜单干扰绘画 */
+  -webkit-user-select: none;
+}

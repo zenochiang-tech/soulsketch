@@ -1,0 +1,210 @@
+.canvas-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+canvas {
+  display: block;
+}
+
+/* 设置面板样式 */
+.settings-panel {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tool-group:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 颜色选择 */
+.color-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.color-label {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+/* 画笔类型切换 */
+.brush-types {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.brush-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  filter: grayscale(0.5);
+  opacity: 0.6;
+}
+
+.brush-btn.active {
+  filter: grayscale(0);
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* 撤销重做 */
+.undo-redo {
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 5px;
+}
+
+.icon-btn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.icon-btn:not(:disabled):hover {
+  transform: scale(1.2);
+}
+
+/* 滑动条 */
+.size-slider {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.size-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.size-preview {
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 底部操作栏 */
+.actions-bar {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 251, 250, 0.4);
+  border-radius: 30px;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.breeze-icon {
+  animation: sway 3s infinite ease-in-out;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(15deg); }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .settings-panel {
+    top: auto;
+    bottom: 110px;
+    left: 20px;
+    right: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .tool-group {
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0;
+    padding-right: 12px;
+  }
+
+  .tool-group:last-child {
+    border-right: none;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .actions-bar {
+    bottom: 30px;
+  }
+}

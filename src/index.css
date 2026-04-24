@@ -1,0 +1,33 @@
+:root {
+  --sunset-peach: #FFDEB4;
+  --twilight-purple: #B2A4FF;
+  --soft-rose: #FFB4B4;
+  --sky-blue: #B4E4FF;
+  --healing-white: #FFFBFA;
+  --manga-black: #2C3333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: var(--twilight-purple);
+  color: var(--manga-black);
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 沉浸式体验：隐藏滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
