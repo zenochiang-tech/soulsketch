@@ -191,21 +191,31 @@ const DrawingCanvas: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas || !contextRef.current) return;
     
-    saveState();
+    // 1. 立即触发视觉反馈 (减少粒子数提升瞬时响应)
     confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#FFDEB4', '#B2A4FF', '#FFB4B4', '#B4E4FF']
+      particleCount: 70, 
+      spread: 60,
+      origin: { y: 0.7 },
+      colors: ['#FFDEB4', '#B2A4FF', '#FFB4B4', '#B4E4FF'],
+      ticks: 200 // 缩短粒子存在时间
     });
 
-    canvas.style.transition = 'opacity 0.5s ease-out';
+    // 2. 立即开始渐隐动画
+    canvas.style.willChange = 'opacity';
+    canvas.style.transition = 'opacity 0.3s ease-out'; // 缩短到 0.3s
     canvas.style.opacity = '0';
     
-    setTimeout(() => {
-      contextRef.current?.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.style.opacity = '1';
-    }, 500);
+    // 3. 在动画进行中偷偷保存状态和清空，不阻塞 UI 线程
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        saveState(); // 在后台保存
+        contextRef.current?.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.opacity = '1';
+        setTimeout(() => {
+          canvas.style.willChange = 'auto';
+        }, 100);
+      }, 350);
+    });
   };
 
   const handleSave = () => {
