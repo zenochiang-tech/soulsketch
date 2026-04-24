@@ -43,18 +43,19 @@ const DrawingCanvas: React.FC = () => {
     ctx.lineJoin = 'round';
     ctx.lineWidth = lineWidth;
     
+    const isTouchDevice = 'ontouchstart' in window;
+    
     if (brushType === 'glow') {
       ctx.strokeStyle = color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = isTouchDevice ? 5 : 10; // 触摸设备降低阴影复杂度
       ctx.shadowColor = hexToRgba(color, 0.6);
       ctx.globalAlpha = 0.8;
     } else if (brushType === 'crayon') {
       ctx.strokeStyle = color;
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 0.6;
-      // 蜡笔效果通过动态改变 lineWidth 模拟
     } else if (brushType === 'rainbow') {
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = isTouchDevice ? 8 : 15; // 触摸设备降低阴影复杂度
       ctx.globalAlpha = 1;
     }
   }, [color, lineWidth, brushType]);
@@ -63,8 +64,13 @@ const DrawingCanvas: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const initCanvas = () => {
+    const getOptimalDPR = () => {
       const dpr = window.devicePixelRatio || 1;
+      return Math.min(dpr, 2); // 限制最高 2.0 DPR
+    };
+
+    const initCanvas = () => {
+      const dpr = getOptimalDPR();
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
@@ -77,7 +83,6 @@ const DrawingCanvas: React.FC = () => {
       applyBrushSettings(context);
       contextRef.current = context;
       
-      // 初始状态存入历史
       const initialState = context.getImageData(0, 0, canvas.width, canvas.height);
       setHistory([initialState]);
     };
@@ -92,7 +97,7 @@ const DrawingCanvas: React.FC = () => {
       tempCanvas.height = canvas.height;
       tempCtx?.drawImage(canvas, 0, 0);
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = getOptimalDPR();
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;

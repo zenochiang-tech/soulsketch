@@ -15,6 +15,7 @@
   filter: blur(80px);
   opacity: 0.6;
   animation: float 20s infinite alternate ease-in-out;
+  will-change: transform; /* 关键：强制开启 GPU 加速 */
 }
 
 .sphere-1 {
